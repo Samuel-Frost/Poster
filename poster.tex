@@ -1,0 +1,308 @@
+% Gemini theme
+% https://github.com/anishathalye/gemini
+%
+% We try to keep this Overleaf template in sync with the canonical source on
+% GitHub, but it's recommended that you obtain the template directly from
+% GitHub to ensure that you are using the latest version.
+
+\documentclass[final]{beamer}
+
+% ====================
+% Packages
+% ====================
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{beamerposter}
+\geometry{papersize={841mm,1188mm}}
+\usetheme{gemini}
+\usecolortheme{gemini}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.14}
+\renewcommand{\d}{\textrm{d}}
+% ====================
+% Lengths
+% ====================
+
+% If you have N columns, choose \sepwidth and \colwidth such that
+% (N+1)*\sepwidth + N*\colwidth = \paperwidth
+\newlength{\sepwidth}
+\newlength{\colwidth}
+\setlength{\sepwidth}{0.025\paperwidth}
+\setlength{\colwidth}{0.3\paperwidth}
+
+\newcommand{\separatorcolumn}{\begin{column}{\sepwidth}\end{column}}
+
+% ====================
+% Title
+% ====================
+
+\title{Ab Initio Study into the Reorientation Rates of NnVH Defects}
+\title{Ab Initio Study of Hydrogen Quantum Tunnelling in NnVH Defects}
+
+
+\author{Samuel J. Frost}
+
+\institute[shortinst]{University of Warwick}
+
+% ====================
+% Footer (optional)
+% ====================
+
+\footercontent{
+  \href{https://www.samuelfrost.co.uk}{https://www.samuelfrost.co.uk} \hfill
+  \href{mailto:alyssa.p.hacker@example.com}{Samuel.Frost@Warwick.ac.uk}}
+% (can be left out to remove footer)
+
+% ====================
+% Logo (optional)
+% ====================
+
+% use this to include logos on the left and/or right side of the header:
+% \logoright{\includegraphics[height=7cm]{logo1.pdf}}
+% \logoleft{\includegraphics[height=7cm]{logo2.pdf}}
+
+% ====================
+% Body
+% ====================
+
+\begin{document}
+
+\begin{frame}[t]
+\begin{columns}[t]
+\separatorcolumn
+
+\begin{column}{\colwidth}
+    
+  \begin{block}{NnVH Defects in Diamond}
+    \begin{itemize}
+        \item NnVH defects contain a central vacancy, surrounded by $n$ substitutional nitrogens, where $n \in [0, 3]$, as well as a hydrogen sitting in the vacancy.
+        \item The original proposed structure of these defects were the hydrogen being bonded to one of the unsaturated carbons surrounding the vacancy, giving rise to a low order point group. (NOT REALLY)
+        \item EPR experiments observe a higher order point group, leading to the suspicion that the hydrogen was bonded to one of the nitrogens, however ab initio studies show that this is too energetically unfavourable.
+        \item This lead to the theory that the hydrogen is rapidly reorientating \emph{between} carbon atoms at a rate fast enough that it shows a higher order averaged symmetry when observed under EPR.
+        \item Classical estimates for the reorientation give incredibly low rates for reorientation, with hydrogen staying at one carbon site for over 300s, much too slow to show averaged symmetry under EPR, which measures at rates in the GHz range. This is shown below in equation .
+        \item This gave rise to the now widely accepted theory that the hydrogen is in fact \emph{quantum tunnelling} between equivalent carbon sites.
+    \end{itemize}
+
+    
+    \begin{figure}
+      \centering
+        \includegraphics[width=\textwidth]{n2vh_coloured.png}
+      \caption{N$_2$VH in its averaged C$_{2v}$ symmetry position, switching rapidly between the two of them. Hydrogen is shown in white, nitrogen in blue, and carbon in grey, most of the surrounding structure has been omitted for clarity. Generated using OVITO.}
+    \end{figure}
+
+
+
+  \end{block}
+
+  \begin{block}{Attempt Frequency from Phonon Modes}
+    \begin{itemize}
+        \item In order to calculator the tunnelling rate, the attempt frequency over the barrier must be known.
+        \item This can be approximated as the vibrational frequency of hydrogen in the \emph{direction} of the reaction coordinate, $\nu$.
+        \item \textbf{Finite displacement phonon calculations} were performed to calculate the phonon modes pertaining to each atom. A $3N\times3N$ \emph{dynamical matrix} is retrieved, which contains the force acted on each atom due to the displacement of another when moved a finite displacement from its minimum energy point.
+        \item This can be represented mathematically by equation , where $E$ is energy, $r_n$ is the displacement(?) of an atom and $m_n$ is its corresponding mass, where $i$ and $j$ occur for every possible pair of atoms.
+    \end{itemize}
+    \begin{align*}
+        \frac{{\d}^2E}{{\d}r_i\,{\d}r_j}\frac{1}{\sqrt{m_i\,m_j}}
+    \end{align*}
+    \begin{itemize}
+        \item From here we can diagonalise the matrix to retrieve its eigenvalues and eigenvectors, which detail the strength and direction of each phonon mode.
+        \item The dot of product of these modes, with the normalised direction of the reaction coordinate will give the tunnelling frequency, $\nu$.
+    \end{itemize}
+
+  \end{block}
+
+  \begin{alertblock}{Computational Details}
+    \begin{itemize}
+        \item All calculations were performed using CASTEP 23.1, using a periodic 64 atom simulation cell.
+        \item The meta-GGA RSCAN functional was used for all calculations unless stated otherwise. 
+        \item A plane wave cut-off of $1\,000$ eV and a $4\times 4\times 4$ monkhorst-pack k-point grid was used, with a force tolerance of 0.02 eV / {\AA} for geometrical minimisation.
+        \item A lattice constant of 3.5537 was found during convergence testing, close to the experimental value of 3.567.
+    \end{itemize}
+
+  \end{alertblock}
+
+\end{column}
+
+\separatorcolumn
+
+\begin{column}{\colwidth}
+
+  \begin{block}{Probability of Tunnelling}
+    % To study the energy barrier that is required to be overcame in order for the hydrogen to tunnel, nudged elastic band (NEB) calculations were performed. This takes the form of multiple \emph{images} between an initial and final state connected by \emph{springs}, such that an equal force is applied between each image. This ensures that during the minimisation procedure each image does not simply minimise to the lowest possible state. This finds the \emph{minimum energy path}, between the two carbons which the hydrogen is tunnelling between, giving a reaction coordinate for the quantum tunnelling. Due to the computational intensity of these calculations, only a small number of points along the reaction coordinate can be sampled, in order to fill in the gaps, Gaussian Process Regression (GPR) can be employed to interpolate the data.  
+
+    \begin{itemize}
+      \item \textbf{Nudged Elastic Band (NEB)} calculations were performed to find the energy along the reaction coordinate of the tunnelling hydrogen for each NnVH system.
+      \item \textbf{Gaussian Process Regression} was employed to interpolate between the discrete points along the reaction coordinate such that continuous integration could be performed later.
+      \item \textbf{The WKB approximation} was then used to calculate the instantaneous probability of tunnelling.  
+    \end{itemize}
+    \begin{align*}        
+        P &= \exp \left(\frac{-4\pi}{h}\int_a^b \sqrt{2m\,(V-E)}  \right)
+    \end{align*}
+    In this equation, the integral is performed between the \emph{turning points} of the energy barrier, $a$ and $b$, where the potential and energy of the system are equal, such that $V = E$. 
+
+
+  \end{block}
+
+  \begin{block}{Fusce aliquam magna velit}
+
+    Et rutrum ex euismod vel. Pellentesque ultricies, velit in fermentum
+    vestibulum, lectus nisi pretium nibh, sit amet aliquam lectus augue vel
+    velit. Suspendisse rhoncus massa porttitor augue feugiat molestie. Sed
+    molestie ut orci nec malesuada. Sed ultricies feugiat est fringilla
+    posuere.
+
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[
+            scale only axis,
+            no markers,
+            domain=0:2*pi,
+            samples=100,
+            axis lines=center,
+            axis line style={-},
+            ticks=none]
+          \addplot[red] {sin(deg(x))};
+          \addplot[blue] {cos(deg(x))};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Another figure caption.}
+    \end{figure}
+
+  \end{block}
+
+  \begin{block}{Nam cursus consequat egestas}
+
+    Nulla eget sem quam. Ut aliquam volutpat nisi vestibulum convallis. Nunc a
+    lectus et eros facilisis hendrerit eu non urna. Interdum et malesuada fames
+    ac ante \textit{ipsum primis} in faucibus. Etiam sit amet velit eget sem
+    euismod tristique. Praesent enim erat, porta vel mattis sed, pharetra sed
+    ipsum. Morbi commodo condimentum massa, \textit{tempus venenatis} massa
+    hendrerit quis. Maecenas sed porta est. Praesent mollis interdum lectus,
+    sit amet sollicitudin risus tincidunt non.
+
+    Etiam sit amet tempus lorem, aliquet condimentum velit. Donec et nibh
+    consequat, sagittis ex eget, dictum orci. Etiam quis semper ante. Ut eu
+    mauris purus. Proin nec consectetur ligula. Mauris pretium molestie
+    ullamcorper. Integer nisi neque, aliquet et odio non, sagittis porta justo.
+
+    \begin{itemize}
+      \item \textbf{Sed consequat} id ante vel efficitur. Praesent congue massa
+        sed est scelerisque, elementum mollis augue iaculis.
+        \begin{itemize}
+          \item In sed est finibus, vulputate
+            nunc gravida, pulvinar lorem. In maximus nunc dolor, sed auctor eros
+            porttitor quis.
+          \item Fusce ornare dignissim nisi. Nam sit amet risus vel lacus
+            tempor tincidunt eu a arcu.
+          \item Donec rhoncus vestibulum erat, quis aliquam leo
+            gravida egestas.
+        \end{itemize}
+      \item \textbf{Sed luctus, elit sit amet} dictum maximus, diam dolor
+        faucibus purus, sed lobortis justo erat id turpis.
+      \item \textbf{Pellentesque facilisis dolor in leo} bibendum congue.
+        Maecenas congue finibus justo, vitae eleifend urna facilisis at.
+    \end{itemize}
+    
+\begin{figure}[htbp]
+    \centering
+    % Set the width of the figure
+
+    \resizebox{\textwidth}{!}{
+    \input{nvh_gpr.tex}
+    }
+    
+    \caption{This is the caption of the graph}
+    \label{fig:mygraph}
+\end{figure}
+
+
+  \end{block}
+
+\end{column}
+
+\separatorcolumn
+
+\begin{column}{\colwidth}
+
+  \begin{exampleblock}{A highlighted block containing some math}
+
+    A different kind of highlighted block.
+
+    $$
+    \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}
+    $$
+
+    Interdum et malesuada fames $\{1, 4, 9, \ldots\}$ ac ante ipsum primis in
+    faucibus. Cras eleifend dolor eu nulla suscipit suscipit. Sed lobortis non
+    felis id vulputate.
+
+    \heading{A heading inside a block}
+
+    Praesent consectetur mi $x^2 + y^2$ metus, nec vestibulum justo viverra
+    nec. Proin eget nulla pretium, egestas magna aliquam, mollis neque. Vivamus
+    dictum $\mathbf{u}^\intercal\mathbf{v}$ sagittis odio, vel porta erat
+    congue sed. Maecenas ut dolor quis arcu auctor porttitor.
+
+    \heading{Another heading inside a block}
+
+    Sed augue erat, scelerisque a purus ultricies, placerat porttitor neque.
+    Donec $P(y \mid x)$ fermentum consectetur $\nabla_x P(y \mid x)$ sapien
+    sagittis egestas. Duis eget leo euismod nunc viverra imperdiet nec id
+    justo.
+
+  \end{exampleblock}
+
+  \begin{block}{Calculated Rates for Every Possible Defect}
+
+    Previous studies have calculated the ab initio energy barrier for every viable NnVH defect, however they have not used those results to fully calculate the reorientation rate of the Hydrogen when possible. The original ab inito results are compared to literature, along with a full calculation of the reorientation rate.
+
+    \begin{table}
+      \centering
+      \begin{tabular}{l r r c}
+        \toprule
+        \textbf{Defect} & \textbf{Barrier / eV} & \textbf{Literature / eV} & \textbf{Rate / GHz} \\
+        \midrule
+        Foo & 13.37 & 384,394 & $\alpha$ \\
+        Bar & 2.17 & 1,392 & $\beta$ \\
+        Baz & 3.14 & 83,742 & $\delta$ \\
+        Qux & 7.59 & 974 & $\gamma$ \\
+        \bottomrule
+      \end{tabular}
+      \caption{A table caption.}
+    \end{table}
+
+    Donec quis posuere ligula. Nunc feugiat elit a mi malesuada consequat. Sed
+    imperdiet augue ac nibh aliquet tristique. Aenean eu tortor vulputate,
+    eleifend lorem in, dictum urna. Proin auctor ante in augue tincidunt
+    tempor. Proin pellentesque vulputate odio, ac gravida nulla posuere
+    efficitur. Aenean at velit vel dolor blandit molestie. Mauris laoreet
+    commodo quam, non luctus nibh ullamcorper in. Class aptent taciti sociosqu
+    ad litora torquent per conubia nostra, per inceptos himenaeos.
+
+    Nulla varius finibus volutpat. Mauris molestie lorem tincidunt, iaculis
+    libero at, gravida ante. Phasellus at felis eu neque suscipit suscipit.
+    Integer ullamcorper, dui nec pretium ornare, urna dolor consequat libero,
+    in feugiat elit lorem euismod lacus. Pellentesque sit amet dolor mollis,
+    auctor urna non, tempus sem.
+
+  \end{block}
+
+  \begin{block}{References}
+
+    \nocite{*}
+    \footnotesize{\bibliographystyle{plain}\bibliography{poster}}
+
+  \end{block}
+
+\end{column}
+
+\separatorcolumn
+\end{columns}
+\end{frame}
+
+\end{document}
