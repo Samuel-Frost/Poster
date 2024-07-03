@@ -21,6 +21,7 @@
 \usepackage{booktabs}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepackage{array}
 \pgfplotsset{compat=1.14}
 \renewcommand{\d}{\textrm{d}}
 % ====================
@@ -111,6 +112,8 @@
     \begin{itemize}
         \item From here we can diagonalise the matrix to retrieve its eigenvalues and eigenvectors, which detail the strength and direction of each phonon mode.
         \item The dot of product of these modes, with the normalised direction of the reaction coordinate will give the tunnelling frequency, $\nu$.
+        \item Due to the computational complexity of this take, only the calculation for the N$_2$VH defect was performed, however the vibrational frequency along the path was found to be $\nu = 1363.5$\,cm$^{-1}$.
+        \item This is remarkably close to the one phonon mode of the diamond lattice, $1332$\,cm$^{-1}$, a value which has previously been used as an estimate for the attempt frequency, giving a good justification for its further use in this work. Using either value gives no meaningful difference to the results for N$_2$VH.
     \end{itemize}
 
   \end{block}
@@ -143,68 +146,34 @@
         P &= \exp \left(\frac{-4\pi}{h}\int_a^b \sqrt{2m\,(V-E)}  \right)
     \end{align*}
     In this equation, the integral is performed between the \emph{turning points} of the energy barrier, $a$ and $b$, where the potential and energy of the system are equal, such that $V = E$. 
+    It is not \emph{only} the hydrogen that moves when quantum tunnelling is taking place, the atoms neighbouring the vacancy also account for a small amount of movement (around 10\% of the total displacement).
+    Therefore, when calculating the mass, we can consider their mass in proportion to their contribution to the reaction coordinate. 
+    \begin{align*}
+        \frac{1}{m^*} = \sum_i \frac{1}{m_i} \frac{\Delta r_i}{q} 
+    \end{align*}
+    Where $m^*$ is the effective mass, $\Delta r_i$ is the total displacement of atom $i$, and $q$ is the total displacement of the reaction coordinate, such that $\sum_i \frac{\Delta r_i}{q} = 1$
 
-
+    Really, we need to go ahead and calc dx/dq, and do $1/μ = Σ(1/mi) * (∂xi/∂q)^2$
+    We just decided that the number for distance that ASE gives us is too strange to reliably use since we can't reproduce it 
+    Actually I think our errors might be from pbc -> use find$\_$mic maybe? copy from source
+    TODO: USE FIND-MIC TO GET REPRODUCABLE PATH VALUE
+          USE THAT VALUE TO THEN GET THE REDUCED MASS OF TUNNELLING BY FINDING DX/DQ
+          LOOK INTO FIXING THE TEMPERATURE RESULTS, BUT 0K MAY JUST HAVE TO BE FINE
+    
   \end{block}
 
   \begin{block}{Energy Levels}
 
     Although anharmonic effects are most likely present, the hydrogen atom can be approximated as a quantum harmonic oscillator (QHO), this means that the ground state energy (\emph{i.e.} the energy at 0K) would be 
     $$E = \frac{1}{2}\,h\nu$$
-
-    \begin{figure}
-      \centering
-      \begin{tikzpicture}
-        \begin{axis}[
-            scale only axis,
-            no markers,
-            domain=0:2*pi,
-            samples=100,
-            axis lines=center,
-            axis line style={-},
-            ticks=none]
-          \addplot[red] {sin(deg(x))};
-          \addplot[blue] {cos(deg(x))};
-        \end{axis}
-      \end{tikzpicture}
-      \caption{Another figure caption.}
-    \end{figure}
+    We have multiple phonon modes, with different strengths pointing in the direction of the hydrogen atom. Taking the sum of all these modes can give us an estimate for the vibrational frequency in that direction. 
+    $$ \sum_i \frac{1}{2}\,h\nu_i + h\nu_i \frac{1}{\exp^{h_i\nu/kBT} - 1} $$
 
   \end{block}
 
-  \begin{block}{Nam cursus consequat egestas}
+  \begin{block}{}
 
-    Nulla eget sem quam. Ut aliquam volutpat nisi vestibulum convallis. Nunc a
-    lectus et eros facilisis hendrerit eu non urna. Interdum et malesuada fames
-    ac ante \textit{ipsum primis} in faucibus. Etiam sit amet velit eget sem
-    euismod tristique. Praesent enim erat, porta vel mattis sed, pharetra sed
-    ipsum. Morbi commodo condimentum massa, \textit{tempus venenatis} massa
-    hendrerit quis. Maecenas sed porta est. Praesent mollis interdum lectus,
-    sit amet sollicitudin risus tincidunt non.
 
-    Etiam sit amet tempus lorem, aliquet condimentum velit. Donec et nibh
-    consequat, sagittis ex eget, dictum orci. Etiam quis semper ante. Ut eu
-    mauris purus. Proin nec consectetur ligula. Mauris pretium molestie
-    ullamcorper. Integer nisi neque, aliquet et odio non, sagittis porta justo.
-
-    \begin{itemize}
-      \item \textbf{Sed consequat} id ante vel efficitur. Praesent congue massa
-        sed est scelerisque, elementum mollis augue iaculis.
-        \begin{itemize}
-          \item In sed est finibus, vulputate
-            nunc gravida, pulvinar lorem. In maximus nunc dolor, sed auctor eros
-            porttitor quis.
-          \item Fusce ornare dignissim nisi. Nam sit amet risus vel lacus
-            tempor tincidunt eu a arcu.
-          \item Donec rhoncus vestibulum erat, quis aliquam leo
-            gravida egestas.
-        \end{itemize}
-      \item \textbf{Sed luctus, elit sit amet} dictum maximus, diam dolor
-        faucibus purus, sed lobortis justo erat id turpis.
-      \item \textbf{Pellentesque facilisis dolor in leo} bibendum congue.
-        Maecenas congue finibus justo, vitae eleifend urna facilisis at.
-    \end{itemize}
-    
 \begin{figure}[htbp]
     \centering
     % Set the width of the figure
@@ -228,29 +197,6 @@
 
   \begin{exampleblock}{A highlighted block containing some math}
 
-    A different kind of highlighted block.
-
-    $$
-    \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}
-    $$
-
-    Interdum et malesuada fames $\{1, 4, 9, \ldots\}$ ac ante ipsum primis in
-    faucibus. Cras eleifend dolor eu nulla suscipit suscipit. Sed lobortis non
-    felis id vulputate.
-
-    \heading{A heading inside a block}
-
-    Praesent consectetur mi $x^2 + y^2$ metus, nec vestibulum justo viverra
-    nec. Proin eget nulla pretium, egestas magna aliquam, mollis neque. Vivamus
-    dictum $\mathbf{u}^\intercal\mathbf{v}$ sagittis odio, vel porta erat
-    congue sed. Maecenas ut dolor quis arcu auctor porttitor.
-
-    \heading{Another heading inside a block}
-
-    Sed augue erat, scelerisque a purus ultricies, placerat porttitor neque.
-    Donec $P(y \mid x)$ fermentum consectetur $\nabla_x P(y \mid x)$ sapien
-    sagittis egestas. Duis eget leo euismod nunc viverra imperdiet nec id
-    justo.
 
   \end{exampleblock}
 
@@ -260,33 +206,23 @@
 
     \begin{table}
       \centering
-      \begin{tabular}{l r r c}
+      \begin{tabular}{l l c c c}
         \toprule
-        \textbf{Defect} & \textbf{Barrier / eV} & \textbf{Literature / eV} & \textbf{Rate (300K) / GHz} \\
+        \textbf{Defect}& &\textbf{Barrier / eV} & \textbf{Lit. / eV} & \textbf{Rate\,@\,0K / GHz} \\
         \midrule
-        NVH S=$\frac{1}{2}$ & 0.846 & 1.1 & $\alpha$ \\
-        Bar & 2.17 & 1,392 & $\beta$ \\
-        Baz & 3.14 & 83,742 & $\delta$ \\
-        Qux & 7.59 & 974 & $\gamma$ \\
+        VH$^{0}$ &S$\,=\,3/2$ & 0.379 & 0.6 & 0\\
+        NVH$^{0}$ &S$\,=\,0$ & 0.926 & 1.1 & 0\\
+        NVH$^{0}$ &S$\,=\,1$ & 0.572 & 0.5 & 0\\
+        NVH$^{-}$ &S$\,=\,1/2$ & 0.410 & 0.5 & 0\\
+        NVH$^{+}$ &S$\,=\,1/2$ & 0.607 & 0.6 & 0\\
+        N$_2$VH$^{0}$ &S$\,=\,1/2$ & 0.677 & 0.9 & 0\\
+        N$_2$VH$^{-}$ &S$\,=\,0$ & 0.157 & 0.1 & 0\\
+        N$_2$VH$^{+}$ &S$\,=\,0$ & 0.613 & 0.5 & 0\\
+
         \bottomrule
       \end{tabular}
-      \caption{A table caption.}
+      \caption{Comparison of the different quantum tunnelling energy barriers for different NnVH defects in diamond, along with their comparison to previous ab initio studies. The rates at two different temperatures are calculated for each defect with the methods previously shown.}
     \end{table}
-
-    Donec quis posuere ligula. Nunc feugiat elit a mi malesuada consequat. Sed
-    imperdiet augue ac nibh aliquet tristique. Aenean eu tortor vulputate,
-    eleifend lorem in, dictum urna. Proin auctor ante in augue tincidunt
-    tempor. Proin pellentesque vulputate odio, ac gravida nulla posuere
-    efficitur. Aenean at velit vel dolor blandit molestie. Mauris laoreet
-    commodo quam, non luctus nibh ullamcorper in. Class aptent taciti sociosqu
-    ad litora torquent per conubia nostra, per inceptos himenaeos.
-
-    Nulla varius finibus volutpat. Mauris molestie lorem tincidunt, iaculis
-    libero at, gravida ante. Phasellus at felis eu neque suscipit suscipit.
-    Integer ullamcorper, dui nec pretium ornare, urna dolor consequat libero,
-    in feugiat elit lorem euismod lacus. Pellentesque sit amet dolor mollis,
-    auctor urna non, tempus sem.
-
   \end{block}
 
   \begin{block}{References}
