@@ -12,7 +12,7 @@
 % ====================
 
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\usepackage{mlmodern}
 \usepackage{beamerposter}
 \geometry{papersize={841mm,1188mm}}
 \usetheme{gemini}
@@ -22,6 +22,9 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{array}
+\usepackage{physics}
+\usepackage{multirow}
+\usepackage{amsmath}
 \pgfplotsset{compat=1.14}
 \renewcommand{\d}{\textrm{d}}
 % ====================
@@ -37,15 +40,18 @@
 
 \newcommand{\separatorcolumn}{\begin{column}{\sepwidth}\end{column}}
 
+\usepackage{xcolor}
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
 % ====================
 % Title
 % ====================
 
 \title{Ab Initio Study into the Reorientation Rates of NnVH Defects}
-\title{Ab Initio Study of Hydrogen Quantum Tunnelling in NnVH Defects}
+\title{Ab Initio Study of Quantum Tunnelling in NnVH Defects}
+\title{Rapid Quantum Tunnelling in \emph{my} NnVH Defects? It's More Likely Than You Think.}
 
-
-\author{Samuel J. Frost}
+\author{Samuel~J.~Frost}
 
 \institute[shortinst]{University of Warwick}
 
@@ -55,7 +61,7 @@
 
 \footercontent{
   \href{https://www.samuelfrost.co.uk}{https://www.samuelfrost.co.uk} \hfill
-  \href{mailto:alyssa.p.hacker@example.com}{Samuel.Frost@Warwick.ac.uk}}
+  \href{mailto:Samuel.Frost@Warwick.ac.uk}{Samuel.Frost@Warwick.ac.uk}}
 % (can be left out to remove footer)
 
 % ====================
@@ -80,12 +86,18 @@
     
   \begin{block}{NnVH Defects in Diamond}
     \begin{itemize}
-        \item NnVH defects contain a central vacancy, surrounded by $n$ substitutional nitrogens, where $n \in [0, 3]$, as well as a hydrogen sitting in the vacancy.
-        \item The original proposed structure of these defects were the hydrogen being bonded to one of the unsaturated carbons surrounding the vacancy, giving rise to a low order point group. (NOT REALLY)
-        \item EPR experiments observe a higher order point group, leading to the suspicion that the hydrogen was bonded to one of the nitrogens, however ab initio studies show that this is too energetically unfavourable.
-        \item This lead to the theory that the hydrogen is rapidly reorientating \emph{between} carbon atoms at a rate fast enough that it shows a higher order averaged symmetry when observed under EPR.
-        \item Classical estimates for the reorientation give incredibly low rates for reorientation, with hydrogen staying at one carbon site for over 300s, much too slow to show averaged symmetry under EPR, which measures at rates in the GHz range. This is shown below in equation .
-        \item This gave rise to the now widely accepted theory that the hydrogen is in fact \emph{quantum tunnelling} between equivalent carbon sites.
+        \item NnVH defects in diamond are made up of \textbf{$n$} substitutional \textbf{N}itrogens,  where $n \in \mathbb{Z} \cap [0, 3]$, surrounding a \textbf{V}acancy, with a \textbf{H}ydrogen sitting in the vacancy.
+        \item EPR experiments observe high point group symmetry for this defect family when $n \neq 3$, leading to the assumption that the hydrogen is sitting in the centre of the vacancy.
+        \item Ab initio studies disproved this, showing that the hydrogen is much too unstable. This lead to the theory that the hydrogen is in fact \emph{rapidly} reorienting between equivalent carbon sites surrounding the vacancy, giving rise to an averaged higher order symmetry under EPR.
+        \item Classical estimations for the reorientation rate give much too low values for this to be the case, so the hydrogen must be quantum tunnelling between sites!
+        
+
+        
+        % \item The original proposed structure of these defects were the hydrogen being bonded to one of the unsaturated carbons surrounding the vacancy, giving rise to a low order point group. \todo{(NOT REALLY)}
+        % \item EPR experiments observe a higher order point group, leading to the suspicion that the hydrogen was bonded to one of the nitrogens, however ab initio studies show that this is too energetically unfavourable.
+        % \item This lead to the theory that the hydrogen is rapidly reorienting \emph{between} carbon atoms at a rate fast enough that it shows a higher order averaged symmetry when observed under EPR.
+        % \item Classical estimates for the reorientation give incredibly low rates for reorientation, with hydrogen staying at one carbon site for over 300s, much too slow to show averaged symmetry under EPR, which measures at rates in the GHz range. \todo{This is shown below in equation.}
+        % \item This gave rise to the now widely accepted theory that the hydrogen is in fact \emph{quantum tunnelling} between equivalent carbon sites.
     \end{itemize}
 
     
@@ -100,33 +112,54 @@
   \end{block}
 
   \begin{block}{Attempt Frequency from Phonon Modes}
-    \begin{itemize}
-        \item In order to calculator the tunnelling rate, the attempt frequency over the barrier must be known.
-        \item This can be approximated as the vibrational frequency of hydrogen in the \emph{direction} of the reaction coordinate, $\nu$.
-        \item \textbf{Finite displacement phonon calculations} were performed to calculate the phonon modes pertaining to each atom. A $3N\times3N$ \emph{dynamical matrix} is retrieved, which contains the force acted on each atom due to the displacement of another when moved a finite displacement from its minimum energy point.
-        \item This can be represented mathematically by equation , where $E$ is energy, $r_n$ is the displacement(?) of an atom and $m_n$ is its corresponding mass, where $i$ and $j$ occur for every possible pair of atoms.
-    \end{itemize}
+    % \begin{itemize}
+    %     \item In order to calculator the tunnelling rate, $\Gamma$, the attempt frequency, $k$, acting on the barrier must be known.
+    %     \item This can be approximated as the vibrational frequency of hydrogen in the \emph{direction} of the reaction coordinate, $\nu$.
+    %     \item \textbf{Finite displacement phonon calculations} were performed to calculate the phonon modes pertaining to each atom. A $3N\times3N$ \emph{dynamical matrix} is retrieved, which contains the force acted on each atom due to the displacement of another when moved a finite displacement from its minimum energy point.
+    %     \item This can be represented mathematically by equation , where $E$ is energy, $r_n$ is the displacement(?) of an atom and $m_n$ is its corresponding mass, where $i$ and $j$ occur for every possible pair of atoms.
+    % \end{itemize}
+    % \begin{align*}
+    %     \frac{{\d}^2E}{{\d}r_i\,{\d}r_j}\frac{1}{\sqrt{m_i\,m_j}}
+    % \end{align*}
+    % \begin{itemize}
+    %     \item From here we can diagonalise the matrix to retrieve its yummy eigenvalues and eigenvectors, which detail the strength and direction of each phonon mode.
+    %     \item The dot of product of these modes, with the normalised direction of the reaction coordinate will give the tunnelling frequency, $\nu$.
+    %     \item Due to the computational complexity of this take, only the calculation for the N$_2$VH defect was performed, however the vibrational frequency along the path was found to be $\nu = 1363.5$\,cm$^{-1}$.
+    %     \item This is remarkably close to the one phonon mode of the diamond lattice, $1332$\,cm$^{-1}$, a value which has previously been used as an estimate for the attempt frequency, giving a good justification for its further use in this work. Using either value gives no meaningful difference to the results for N$_2$VH.
+    % \end{itemize}
+
+\begin{itemize}
+    \item In order to calculator the tunnelling rate, $\Gamma$, the attempt frequency, $k$, acting on the barrier must be known.
+    \item A \textbf{finite displacement} calculation was performed on N$_2$VH to get a $3N\times3N$ \emph{dynamical matrix} that contains the force created on all $N$ atoms due to the displacement of each atom from its origin.
+    \item This can also be represented as the second derivative of energy with respective to atomic displacements, $r$,  of atoms $i$ and $j$.
+\end{itemize}
     \begin{align*}
         \frac{{\d}^2E}{{\d}r_i\,{\d}r_j}\frac{1}{\sqrt{m_i\,m_j}}
     \end{align*}
     \begin{itemize}
-        \item From here we can diagonalise the matrix to retrieve its eigenvalues and eigenvectors, which detail the strength and direction of each phonon mode.
-        \item The dot of product of these modes, with the normalised direction of the reaction coordinate will give the tunnelling frequency, $\nu$.
-        \item Due to the computational complexity of this take, only the calculation for the N$_2$VH defect was performed, however the vibrational frequency along the path was found to be $\nu = 1363.5$\,cm$^{-1}$.
-        \item This is remarkably close to the one phonon mode of the diamond lattice, $1332$\,cm$^{-1}$, a value which has previously been used as an estimate for the attempt frequency, giving a good justification for its further use in this work. Using either value gives no meaningful difference to the results for N$_2$VH.
+        \item This can be solved to retrieve the wavenumbers of the phonon modes, $k$, and their directions on each atom, $i$, $\nu_i_k$
+        \item The frequency at which the hydrogen vibrates can be approximated to be the attempt frequency, $k$. This can be found by finding the strength of each phonon mode of hydrogen acting in the direction of tunnelling.
     \end{itemize}
+    \begin{align*}
+        k = \sum_k^{3N} \Vec{\nu}_H_k\, \cdot\, \Vec{r}_H &= 40.872\,\textrm{THz}\\
+        &= 1363\,\textrm{cm}^{-1}
+    \end{align*}
+    \begin{itemize}
+        \item This is very close to the one-phonon mode of diamond, $1332$cm$^{-1}$, which has previously been used as an estimation for these calculations, justifying its further use here.
+    \end{itemize}
+    
 
   \end{block}
 
-  \begin{alertblock}{Computational Details}
+  \begin{exampleblock}{Computational Details} % used to be alertblock
     \begin{itemize}
         \item All calculations were performed using CASTEP 23.1, using a periodic 64 atom simulation cell.
         \item The meta-GGA RSCAN functional was used for all calculations unless stated otherwise. 
-        \item A plane wave cut-off of $1\,000$ eV and a $4\times 4\times 4$ monkhorst-pack k-point grid was used, with a force tolerance of 0.02 eV / {\AA} for geometrical minimisation.
+        \item A plane wave cut-off of $1\,000$ eV and a $4\times 4\times 4$ Monkhorst-Pack k-point grid was used, with a force tolerance of 0.02 eV / {\AA} for geometrical minimisation.
         \item A lattice constant of 3.5537 was found during convergence testing, close to the experimental value of 3.567.
     \end{itemize}
 
-  \end{alertblock}
+  \end{exampleblock}
 
 \end{column}
 
@@ -134,96 +167,171 @@
 
 \begin{column}{\colwidth}
 
-  \begin{block}{Probability of Tunnelling}
+  \begin{block}{Tunnel 'er? I hardly know 'er!}
     % To study the energy barrier that is required to be overcame in order for the hydrogen to tunnel, nudged elastic band (NEB) calculations were performed. This takes the form of multiple \emph{images} between an initial and final state connected by \emph{springs}, such that an equal force is applied between each image. This ensures that during the minimisation procedure each image does not simply minimise to the lowest possible state. This finds the \emph{minimum energy path}, between the two carbons which the hydrogen is tunnelling between, giving a reaction coordinate for the quantum tunnelling. Due to the computational intensity of these calculations, only a small number of points along the reaction coordinate can be sampled, in order to fill in the gaps, Gaussian Process Regression (GPR) can be employed to interpolate the data.  
 
+    % \begin{itemize}
+    %   \item \textbf{Nudged Elastic Band (NEB)} calculations were performed to find the energy along the reaction coordinate of the tunnelling hydrogen for each NnVH system.
+    %   \item \textbf{Gaussian Process Regression} was employed to interpolate between the discrete points along the reaction coordinate such that continuous integration could be performed later.
+    %   \item \textbf{The WKB approximation} was then used to calculate the instantaneous probability of tunnelling.  
+    % \end{itemize}
     \begin{itemize}
-      \item \textbf{Nudged Elastic Band (NEB)} calculations were performed to find the energy along the reaction coordinate of the tunnelling hydrogen for each NnVH system.
-      \item \textbf{Gaussian Process Regression} was employed to interpolate between the discrete points along the reaction coordinate such that continuous integration could be performed later.
-      \item \textbf{The WKB approximation} was then used to calculate the instantaneous probability of tunnelling.  
+        \item The \textbf{WKB Approximation} is used to calculate the probability, $P$, of tunnelling through the potential energy barrier.         
+        \item   The integral is performed between the \emph{turning points} of the energy barrier, $a$ and $b$, where the potential energy, $V(q)$ and kinetic energy, $E(T)$ of the system are equal, such that $V(q) = E(T)$. 
     \end{itemize}
-    \begin{align*}        
-        P &= \exp \left(\frac{-4\pi}{h}\int_a^b \sqrt{2m\,(V-E)}  \right)
-    \end{align*}
-    In this equation, the integral is performed between the \emph{turning points} of the energy barrier, $a$ and $b$, where the potential and energy of the system are equal, such that $V = E$. 
-    It is not \emph{only} the hydrogen that moves when quantum tunnelling is taking place, the atoms neighbouring the vacancy also account for a small amount of movement (around 10\% of the total displacement).
-    Therefore, when calculating the mass, we can consider their mass in proportion to their contribution to the reaction coordinate. 
-    \begin{align*}
-        \frac{1}{m^*} = \sum_i \frac{1}{m_i} \frac{\Delta r_i}{q} 
-    \end{align*}
-    Where $m^*$ is the effective mass, $\Delta r_i$ is the total displacement of atom $i$, and $q$ is the total displacement of the reaction coordinate, such that $\sum_i \frac{\Delta r_i}{q} = 1$
-
-    Really, we need to go ahead and calc dx/dq, and do $1/μ = Σ(1/mi) * (∂xi/∂q)^2$
-    We just decided that the number for distance that ASE gives us is too strange to reliably use since we can't reproduce it 
-    Actually I think our errors might be from pbc -> use find$\_$mic maybe? copy from source
-    TODO: USE FIND-MIC TO GET REPRODUCABLE PATH VALUE
-          USE THAT VALUE TO THEN GET THE REDUCED MASS OF TUNNELLING BY FINDING DX/DQ
-          LOOK INTO FIXING THE TEMPERATURE RESULTS, BUT 0K MAY JUST HAVE TO BE FINE
     
+    \begin{align*}        
+        P &= \exp \left(\frac{-4\pi}{h}\int_a^b \sqrt{2\mu\,(V(q)-E(T))}\,{\d}q\right)
+    \end{align*}
+    \begin{itemize}
+        \item Where $\mu$ is the reduced mass of the system, $h$ is Planck's constant, and $q$ is the reaction coordinate/minimum energy path.
+    \end{itemize}
+
+    \end{block}
+    \begin{block}{Coupling Constant}
+        
+    It is not \emph{only} the hydrogen that moves when quantum tunnelling is taking place, the atoms neighbouring the vacancy also account for a small amount of the total reaction coordinate.
+
+    We can consider a coupling constant, $c_i$ for each atom $i$, which details how strongly its motion is coupled to the reaction coordinate. Where $u_i$ is the cumulative displacement, and $Q$ is the total displacement covered by the path.
+    \begin{align*}
+        c_i &= \left(\frac{u_i}{Q}\right)^2
+    \end{align*}
+    % The coupling constants have the property that their sum is always $1$.
+    % \begin{align*}
+    %     \sum_i c_i &= 1
+    % \end{align*}
+    \textrm{Therefore when calculating the reduced mass, $\mu$ we consider each atom in proportion to its coupling constant.}
+    \begin{align*}
+        \frac{1}{\mu} &= \sum_i \frac{1}{m_i}\,c_i
+    \end{align*}
+
   \end{block}
 
   \begin{block}{Energy Levels}
+     \begin{itemize}
+         \item Although anharmonic effects are most likely present, the motion of the atoms can approximated as a quantum harmonic oscillators (QHO), with phonon modes either aiding and obstructing to motion along the reaction coordinate, meaning each phonon mode $\nu_i$ is actually a one-dimensional vector quantity. For the ground state approximation, we can find the vibrational frequency  
+         \item With the phonon modes pointing in the direction of the reaction coordinate already, we can find the energy of a certain atom as 
+     \end{itemize}
+     \begin{align*}
+         E(\nu, T) = h\nu\left(\frac{1}{2} + n(\nu, T)\right)
+     \end{align*}
+    \begin{itemize}
+        \item Where is the $n(\nu, T)$ Bose-Einstein distribution, used here to find how occupied each phonon mode is at a certain temperature.
+    \end{itemize}
+    \begin{align*}
+        n(\nu, T) = \frac{1}{e^{\,h\nu/kBT} - 1}
+    \end{align*}
+    \begin{itemize}
+        \item All of these energies can then be summed to get the energy of the oscillations of an atom along the reaction coordinate. Where $k$ specifies a certain phonon mode.
+    \end{itemize}
+    \begin{align*}
+        E_i(T) = \sum_k E(\nu_k, T)
+    \end{align*}
+    \begin{itemize}
+        \item Then when calculating the total energy, we can once again scale by the coupling index $c_i$
+    \end{itemize}
+    \begin{align*}
+        E(T) = \sum_i E_i(T)\,c_i
+    \end{align*}
+  \end{block}
 
-    Although anharmonic effects are most likely present, the hydrogen atom can be approximated as a quantum harmonic oscillator (QHO), this means that the ground state energy (\emph{i.e.} the energy at 0K) would be 
-    $$E = \frac{1}{2}\,h\nu$$
-    We have multiple phonon modes, with different strengths pointing in the direction of the hydrogen atom. Taking the sum of all these modes can give us an estimate for the vibrational frequency in that direction. 
-    $$ \sum_i \frac{1}{2}\,h\nu_i + h\nu_i \frac{1}{\exp^{h_i\nu/kBT} - 1} $$
+% \begin{block}{Hydrogen Only Approximation}
+% \begin{itemize}
+%     \item As the hydrogen atom is responsible for the vast majority of the movement, it is not unreasonable to model the tunnelling action as only pertaining to the hydrogen atom.
+%     \item For this approximation, simply assume that $m = m_H$, the reaction coordinate is simply the path of hydrogen, and only account for the phonon modes acting on hydrogen.
+%     \item As the phonon modes were bespokely calculated for N$_2$VH, carrying these calculations forward such that they are assumed to be constant for hydrogen in every NnVH will introduce some unknown errors, however it serves as a good estimate of the true rate.
+% \end{itemize}
+    
+% \end{block}
+
+  \begin{block}{WTF IS NnVH?? WHY IS IT COOL? HERE'S WHY}
+
+
 
   \end{block}
 
-  \begin{block}{}
+\end{column}
+
+\separatorcolumn
+
+\begin{column}{\colwidth}
+
+
+  \begin{block}{To Tunnel or not to Tunnel}
+
+    Previous studies have calculated the ab initio energy barrier for every viable NnVH defect, however they have not used those results to fully calculate the reorientation rate of the Hydrogen when possible. The full calculation of reorientation rate for each defect is shown, many of these defects have yet to be observed in experiment.
+    % The original ab inito results are compared to literature, along with a full calculation of the reorientation rate.
+
+    % \begin{table}[h!]
+    %   \centering
+    %   \begin{tabular}{l l c c l c c}
+    %     \toprule
+    %     \multirow{2}{*}{\textbf{Defect}}&\multirow{2}{*}{} &\multirow{2}{*}{\textbf{Barrier / eV}} & \multirow{2}{*}{\textbf{Lit. / eV}} & \multicolumn{3}{c}{\textbf{Rate / GHz}} \\ \cline{5-7} &&&& 0\,K & 100\,K & 300\,K\\
+    %     \midrule
+    %     VH$^{0}$ &S$\,=\,3/2$ & 0.379 & 0.6 & 0.067$\pm$0.00115\\
+    %     NVH$^{0}$ &S$\,=\,0$ & 0.926 & 1.1 & 0\\
+    %     NVH$^{0}$ &S$\,=\,1$ & 0.572 & 0.5 & 0\\
+    %     NVH$^{-}$ &S$\,=\,1/2$ & 0.410 & 0.5 & 0.067$\pm$0.00115 & 0.067$\pm$0.00115 & 0.067$\pm$0.00115\\
+    %     NVH$^{+}$ &S$\,=\,1/2$ & 0.607 & 0.6 & 0\\
+    %     N$_2$VH$^{0}$ &S$\,=\,1/2$ & 0.677 & 0.9 & 0\\
+    %     N$_2$VH$^{-}$ &S$\,=\,0$ & 0.157 & 0.1 & 0\\
+    %     N$_2$VH$^{+}$ &S$\,=\,0$ & 0.613 & 0.5 & 0\\
+
+    %     \bottomrule
+    %   \end{tabular}
+    %   \caption{Comparison of the different quantum tunnelling energy barriers for different NnVH defects in diamond, along with their comparison to previous ab initio studies. The rates at two different temperatures are calculated for each defect with the methods previously shown.}
+    % \end{table}
+    \begin{table}[h!]
+      \centering
+      \begin{tabular}{l l c  c c c}
+        \toprule
+          \multirow{2}{*}{\textbf{Defect}}
+        & \multirow{2}{*}{}
+        & \multirow{2}{*}{\textbf{Barrier / eV}}
+        & \multicolumn{3}{c}{\textbf{Rate / GHz}} \\
+        & & & 0\,K & 100\,K & 300\,K \\
+        \midrule
+        VH$^{0}$ &S$\,=\,3/2$ & 0.378 & 0\\
+        VH$^{-}$ &S$\,=\,1$ & 0.707 & 0\\
+        VH$^{+}$ &S$\,=\,0$ & 0.995 & 0\\
+        NVH$^{0}$ &S$\,=\,0$ & 0.926 & 0\\
+        NVH$^{0}$ &S$\,=\,1$ & 0.572 & 0\\
+        NVH$^{-}$ &S$\,=\,1/2$ &  0.410 & 0\\
+        NVH$^{+}$ &S$\,=\,1/2$ &  0.607 & 0\\
+        N$_2$VH$^{0}$ &S$\,=\,1/2$ & 0.677 & 0\\
+        N$_2$VH$^{-}$ &S$\,=\,0$  & 0.157 & 0\\
+        N$_2$VH$^{+}$ &S$\,=\,0$  & 0.613 & 0\\
+
+        \bottomrule
+      \end{tabular}
+      \caption{Comparison of the different quantum tunnelling energy barriers for different NnVH defects in diamond, along with their comparison to previous ab initio studies. The rates at two different temperatures are calculated for each defect with the methods previously shown.}
+    \end{table}
+
+    
+  \end{block}
+
+    \begin{block}{Nudged Elastic Band (NEB)}
+    \begin{itemize}
+    \item Computational method to find the minimum energy path (MEP) between two different states, in this case a hydrogen atom moving between two equivalent carbons. 
+    \item Evenly spaced interpolated images are generated between the two states, connected by virtual springs, so that the forces between each image keep them evenly spaced.
+    \item This method will give us an energy barrier along the minimum energy path, also known as the reaction coordinate, which can then be used to calculate the quantum tunnelling rate.
+    \item \textbf{Gaussian Process Regression} can be used to interpolate along the path, no one is actually going to read this, giving an estimated function for a continuous path which can then be integrated over.
+    \end{itemize}
 
 
 \begin{figure}[htbp]
     \centering
     % Set the width of the figure
 
-    \resizebox{\textwidth}{!}{
+    \resizebox{1\textwidth}{!}{
     \input{nvh_gpr.tex}
     }
     
-    \caption{This is the caption of the graph}
+    \caption{The NEB plot of the NVH$^0$ S=$\frac{1}{2}$ defect, showing the cumulative displacement of the minimum energy path on the x-axis, and the potential energy, or barrier height, on the y-axis. The shape is typical of every NnVH defect.}
     \label{fig:mygraph}
 \end{figure}
-
-
-  \end{block}
-
-\end{column}
-
-\separatorcolumn
-
-\begin{column}{\colwidth}
-
-  \begin{exampleblock}{A highlighted block containing some math}
-
-
-  \end{exampleblock}
-
-  \begin{block}{Calculated Rates for Every Possible Defect}
-
-    Previous studies have calculated the ab initio energy barrier for every viable NnVH defect, however they have not used those results to fully calculate the reorientation rate of the Hydrogen when possible. The original ab inito results are compared to literature, along with a full calculation of the reorientation rate.
-
-    \begin{table}
-      \centering
-      \begin{tabular}{l l c c c}
-        \toprule
-        \textbf{Defect}& &\textbf{Barrier / eV} & \textbf{Lit. / eV} & \textbf{Rate\,@\,0K / GHz} \\
-        \midrule
-        VH$^{0}$ &S$\,=\,3/2$ & 0.379 & 0.6 & 0\\
-        NVH$^{0}$ &S$\,=\,0$ & 0.926 & 1.1 & 0\\
-        NVH$^{0}$ &S$\,=\,1$ & 0.572 & 0.5 & 0\\
-        NVH$^{-}$ &S$\,=\,1/2$ & 0.410 & 0.5 & 0\\
-        NVH$^{+}$ &S$\,=\,1/2$ & 0.607 & 0.6 & 0\\
-        N$_2$VH$^{0}$ &S$\,=\,1/2$ & 0.677 & 0.9 & 0\\
-        N$_2$VH$^{-}$ &S$\,=\,0$ & 0.157 & 0.1 & 0\\
-        N$_2$VH$^{+}$ &S$\,=\,0$ & 0.613 & 0.5 & 0\\
-
-        \bottomrule
-      \end{tabular}
-      \caption{Comparison of the different quantum tunnelling energy barriers for different NnVH defects in diamond, along with their comparison to previous ab initio studies. The rates at two different temperatures are calculated for each defect with the methods previously shown.}
-    \end{table}
-  \end{block}
+        
+    \end{block}
 
   \begin{block}{References}
 
